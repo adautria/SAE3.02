@@ -36,9 +36,11 @@ def cree_graph_incompatibilite():
     while lst_donnees :
         signal_selec = lst_donnees[0]
         lst_donnees.pop(0)
-        for signal_comparé in lst_donnees :
-            if signal_selec[1][0]-10 > signal_comparé[1][1] or signal_selec[1][1]+10 > signal_comparé[1][0]:
-                G.add_edge(signal_selec[0],signal_comparé[0])
+        for signal_compare in lst_donnees :
+            if signal_selec[1][0]-10 > signal_compare[1][1] or signal_selec[1][1]+10 < signal_compare[1][0]:
+                pass
+            else:
+                G.add_edge(signal_selec[0],signal_compare[0])
     return G
 
 graph_incompatible = cree_graph_incompatibilite()
