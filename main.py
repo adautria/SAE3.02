@@ -58,7 +58,7 @@ def dessiner_graph ():
 def algo_welsh ():
     G = cree_graph_incompatibilite()
     lst_noeuds = G.nodes()
-    lst_couleurs_chosies = []
+    global(lst_couleurs_chosies = {})
     for noeud in lst_noeuds:
         nx.set_node_attributes(G, {noeud: 'blanc'}, 'couleur')
     for noeud in lst_noeuds:
@@ -70,7 +70,7 @@ def algo_welsh ():
         for key,value in couleurs_possibles.items():
             if value == 0 :
                 nx.set_node_attributes(G, {noeud: key}, 'couleur')
-                lst_couleurs_chosies.append(key)
+                lst_couleurs_chosies[noeud]=key
                 break
     print (len(set(lst_couleurs_chosies)))
     return int(len(set(lst_couleurs_chosies)))
