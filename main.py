@@ -54,11 +54,11 @@ def dessiner_graph ():
     nx.draw_networkx_labels(G,pos) 
     plt.show()
 
-
+lst_couleurs_choisies = {}
 def algo_welsh ():
     G = cree_graph_incompatibilite()
     lst_noeuds = G.nodes()
-    global(lst_couleurs_chosies = {})
+    lst_couleurs_choisies = {}
     for noeud in lst_noeuds:
         nx.set_node_attributes(G, {noeud: 'blanc'}, 'couleur')
     for noeud in lst_noeuds:
@@ -70,10 +70,9 @@ def algo_welsh ():
         for key,value in couleurs_possibles.items():
             if value == 0 :
                 nx.set_node_attributes(G, {noeud: key}, 'couleur')
-                lst_couleurs_chosies[noeud]=key
+                lst_couleurs_choisies[noeud]=key
                 break
-    print (len(set(lst_couleurs_chosies)))
-    return int(len(set(lst_couleurs_chosies)))
+    return int(len(set(lst_couleurs_choisies)))
 
 
 
