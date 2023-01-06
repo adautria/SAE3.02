@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+#variable globale
+lst_couleurs_choisies = {}
 
 #recuperation des donnees sous forme d'une liste de liste
 def recup_donnees():
@@ -14,6 +16,15 @@ def recup_donnees():
             # maintenant, on peut traiter les données de chaque colonne comme des variables
             lst_donnees.append([col1, [col2, col3]])  #On insère les valeurs dans la liste
     return(lst_donnees)
+
+
+def dessiner_couleur (G,C):
+    node_colors = [v['couleur'] for v in G.nodes.values()]
+    pos = nx.circular_layout(G)
+    nx.draw_networkx_nodes(G,pos,node_color=node_colors)
+    nx.draw_networkx_edges(G,pos)
+    nx.draw_networkx_labels(G,pos) 
+    plt.show()
 
 def cree_graph_incompatibilite():
     lst_donnees = recup_donnees()
@@ -36,21 +47,12 @@ def cree_graph_incompatibilite():
     return G
 
 
-# Dessinez le graphique
-def dessiner_graph(lst_couleurs_choisies):
-    G = cree_graph_incompatibilite()
-    pos = nx.circular_layout(G)
-    for signal,couleur in lst_couleurs_choisies.items():
-        nx.draw_networkx_nodes(G,pos,node_color=couleur,node_size=700,nodelist=[signal])
-    nx.draw_networkx_edges(G,pos)
-    nx.draw_networkx_labels(G,pos) 
-    plt.show()
 
-lst_couleurs_choisies = {}
+
 def algo_welsh ():
     G = cree_graph_incompatibilite()
     lst_noeuds = G.nodes()
-    lst_couleurs_choisies = {}
+    dico_couleurs_choisies = {}
     for noeud in lst_noeuds:
         nx.set_node_attributes(G, {noeud: 'blanc'}, 'couleur')
     for noeud in lst_noeuds:
@@ -62,12 +64,40 @@ def algo_welsh ():
         for key,value in couleurs_possibles.items():
             if value == 0 :
                 nx.set_node_attributes(G, {noeud: key}, 'couleur')
-                lst_couleurs_choisies[noeud]=key
+                dico_couleurs_choisies[noeud]=key
                 break
-    dessiner_graph(lst_couleurs_choisies)
-    return int(len(set(lst_couleurs_choisies)))
+    return dico_couleurs_choisies
 
-algo_welsh()
-print(lst_couleurs_choisies)
+# Dessinez le graphique
+def dessiner_graph():
+    G = cree_graph_incompatibilite()
+    pos = nx.circular_layout(G)
+    dico_couleurs_choisies = algo_welsh()
+    print (dico_couleurs_choisies)
+    for signal,couleur in dico_couleurs_choisies.items():
+        nx.draw_networkx_nodes(G,pos,node_color=couleur,node_size=700,nodelist=[signal])
+    nx.draw_networkx_edges(G,pos)
+    nx.draw_networkx_labels(G,pos) 
+    plt.show()
 
+def nb_fibre ():
+    lst = algo_welsh()
+    return int(len(set(lst.values())))
 
+def find_largest_clique():
+    graph = cree_graph_incompatibilite()
+    max_clique = []
+    for v in graph:
+        clique = []
+        clique.append(v)
+        for u in graph:
+            if all(x in graph[u] for x in clique):
+                clique.append(u)
+        if len(clique) > len(max_clique):
+            max_clique = clique
+    return max_clique
+
+print(nb_fibre())
+print(algo_welsh())
+dessiner_graph()
+print (find_largest_clique())
