@@ -79,6 +79,13 @@ def algo_welsh ():
 
 
 
-
+def dessiner_graph ():
+    G = cree_graph_incompatibilite()
+    pos = nx.circular_layout(G)
+    for signal,couleur in lst_couleurs_choisies.items():
+        nx.draw_networkx_nodes(G,pos,node_color=couleur,nodelist=[signal])
+    nx.draw_networkx_edges(G,pos)
+    nx.draw_networkx_labels(G,pos) 
+    plt.show()
 
 
