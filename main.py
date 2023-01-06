@@ -15,15 +15,6 @@ def recup_donnees():
             lst_donnees.append([col1, [col2, col3]])  #On insère les valeurs dans la liste
     return(lst_donnees)
 
-
-def dessiner_couleur (G,C):
-    node_colors = [v['couleur'] for v in G.nodes.values()]
-    pos = nx.circular_layout(G)
-    nx.draw_networkx_nodes(G,pos,node_color=node_colors)
-    nx.draw_networkx_edges(G,pos)
-    nx.draw_networkx_labels(G,pos) 
-    plt.show()
-
 def cree_graph_incompatibilite():
     lst_donnees = recup_donnees()
     lst_signaux = []
@@ -46,49 +37,37 @@ def cree_graph_incompatibilite():
 
 
 # Dessinez le graphique
-def dessiner_graph ():
+def dessiner_graph(lst_couleurs_choisies):
     G = cree_graph_incompatibilite()
     pos = nx.circular_layout(G)
-    nx.draw_networkx_nodes(G,pos)
+    for signal,couleur in lst_couleurs_choisies.items():
+        nx.draw_networkx_nodes(G,pos,node_color=couleur,node_size=700,nodelist=[signal])
     nx.draw_networkx_edges(G,pos)
     nx.draw_networkx_labels(G,pos) 
     plt.show()
 
+lst_couleurs_choisies = {}
 def algo_welsh ():
     G = cree_graph_incompatibilite()
     lst_noeuds = G.nodes()
-    dico_couleurs_choisies = {}
+    lst_couleurs_choisies = {}
     for noeud in lst_noeuds:
         nx.set_node_attributes(G, {noeud: 'blanc'}, 'couleur')
     for noeud in lst_noeuds:
         lst_voisins = list(G.neighbors(noeud))
-        couleurs_possibles = {"blanc": 1,"rouge":0, "orange":0, 'jaune':0, 'vert':0, 'bleu':0, 'violet':0, 'marron':0, 'gris':0, 'noir':0, 'rose':0, 'turquoise':0, 'indigo':0, 'magenta':0, 'cyan':0}
+        couleurs_possibles = {"white":1, "red":0, "orange":0, 'yellow':0, 'green':0, 'blue':0, 'purple':0, 'brown':0, 'grey':0, 'black':0, 'pink':0, 'turquoise':0, 'indigo':0, 'magenta':0, 'cyan':0}
         for voisin in lst_voisins :
             couleur_du_voisin = G.nodes[voisin]['couleur']
             couleurs_possibles[couleur_du_voisin] = 1
         for key,value in couleurs_possibles.items():
             if value == 0 :
                 nx.set_node_attributes(G, {noeud: key}, 'couleur')
-                dico_couleurs_choisies[noeud]=key
+                lst_couleurs_choisies[noeud]=key
                 break
-    return dico_couleurs_choisies
+    dessiner_graph(lst_couleurs_choisies)
+    return int(len(set(lst_couleurs_choisies)))
 
-def nb_fibre ():
-    lst = algo_welsh()
-    return int(len(set(lst.values())))
-
-
-
-
-
-
-def dessiner_graph ():
-    G = cree_graph_incompatibilite()
-    pos = nx.circular_layout(G)
-    for signal,couleur in lst_couleurs_choisies.items():
-        nx.draw_networkx_nodes(G,pos,node_color=couleur,nodelist=[signal])
-    nx.draw_networkx_edges(G,pos)
-    nx.draw_networkx_labels(G,pos) 
-    plt.show()
+algo_welsh()
+print(lst_couleurs_choisies)
 
 
