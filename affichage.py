@@ -36,21 +36,26 @@ def w1():
     title_.pack()
 
     #bouton d'importation de fichier
-    bouton_importerF = Button(frame,text="Choisissez un fichier a importer",font=("Courrier",35),command=import_file,bg="#2F3CAD",fg="black")
-    bouton_importerF.pack(pady=20,fill=X)
+    bouton_importerF = Button(frame,text="Choisissez un fichier a importer",font=("Courrier",30),command=import_file,bg="#2F3CAD",fg="black")
+    bouton_importerF.pack(pady=10,fill=X)
 
     #boutoun de creation du fichier ( renvoi vers seconde fenetre)
-    bouton_creefichier = Button(frame,text="Cree un fichier de donnes",font=("Courrier",35),command=aller_w3,bg="#2F3CAD",fg="black")
-    bouton_creefichier.pack(pady=20,fill=X)
+    bouton_creefichier = Button(frame,text="Cree un fichier de donnes",font=("Courrier",30),command=aller_w3,bg="#2F3CAD",fg="black")
+    bouton_creefichier.pack(pady=10,fill=X)
 
     #creer bouton  qui affiche le graph d'incompatibilité
-    bout_graph = Button(frame,text="Graphe d'incompatibilité",font=("Courrier",35),command=lambda: dessiner_graph(fichier_choisie),bg="#2F3CAD",fg="black")
-    bout_graph.pack(pady=20,fill=X)
+    bout_graph = Button(frame,text="Graphe d'incompatibilité",font=("Courrier",30),command=lambda: dessiner_graph(fichier_choisie),bg="#2F3CAD",fg="black")
+    bout_graph.pack(pady=10,fill=X)
 
     #creer bouton affichant la second fenetre
-    bout_result = Button(frame,text="Nombre de fibre nécéssaire",font=("Courrier",35),command=aller_w2,bg="#2F3CAD",fg="black")
-    bout_result.pack(pady=20,fill=X)
+    bout_result = Button(frame,text="Nombre de fibre nécéssaire",font=("Courrier",30),command=aller_w2,bg="#2F3CAD",fg="black")
+    bout_result.pack(pady=10,fill=X)
 
+    #creer bouton pour le visuel des fibres
+    bout_result = Button(frame,text="visuel du multiplexage",font=("Courrier",30),command=visuel_multi,bg="#2F3CAD",fg="black")
+    bout_result.pack(pady=10,fill=X)
+
+    #bouton de fermeture des fenetre et du programme
     fermer = Button(w1, text="tout fermer ", font=("Courrier", 25), command=exit, bg="#2F3CAD", fg="#2F3CAD")
     fermer.pack(pady=20, fill=X, side=BOTTOM)
 
@@ -79,8 +84,7 @@ def w2():
     title_.pack(pady=40)
     titlet_ = Label(frame3, text= "Multiplexage", font=("Courrier", 35), bg="#2F3CAD")
     titlea_ = Label(frame3, text= "-----------------------------------------------", font=("Courrier", 35), bg="#2F3CAD")
-    title_ = Label(frame3, text= "Pour mettre en place ce multiplaxage un total de", font=("Courrier", 35), bg="#2F3CAD")
-    titlebis_ = Label(frame3, text= f"{nb_fibre(fichier_choisie)} fibre est nécessaire au minimum ", font=("Courrier", 35), bg="#2F3CAD")
+    titlebis_ = Label(frame3, text= nb_fibre(fichier_choisie), font=("Courrier", 35), bg="#2F3CAD")
     titleb_ = Label(frame3, text= "-----------------------------------------------", font=("Courrier", 35), bg="#2F3CAD")
     titlet_.pack()
     titlea_.pack()
@@ -136,4 +140,3 @@ def w3():
 
 
 w1()
-
