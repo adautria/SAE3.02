@@ -8,6 +8,7 @@ from tkinter import filedialog
 fichier_choisie = 'donnees.txt'
 
 def w1():
+    global fichier_choisie
     #tkinter fenetre
     w1 = Tk()
     w1.title("Menu")
@@ -52,7 +53,7 @@ def w1():
     bout_result.pack(pady=10,fill=X)
 
     #creer bouton pour le visuel des fibres
-    bout_result = Button(frame,text="visuel du multiplexage",font=("Courrier",30),command=visuel_multi,bg="#2F3CAD",fg="black")
+    bout_result = Button(frame,text="visuel du multiplexage",font=("Courrier",30),command=lambda:visuel_multi(fichier_choisie),bg="#2F3CAD",fg="black")
     bout_result.pack(pady=10,fill=X)
 
     #bouton de fermeture des fenetre et du programme
