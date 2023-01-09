@@ -91,12 +91,9 @@ def dessiner_graph(fichier_choisie):
     nx.draw_networkx_labels(G,pos) 
     plt.show()
 
-def nb_fibre (fichier_choisie):
-    lst = algo_welsh(fichier_choisie)
-    return int(len(set(lst.values())))
 
-def find_largest_clique():
-    graph = cree_graph_incompatibilite()
+def find_largest_clique(fichier_choisie):
+    graph = cree_graph_incompatibilite(fichier_choisie)
     max_clique = []
     for v in graph:
         clique = []
@@ -106,6 +103,16 @@ def find_largest_clique():
                 clique.append(u)
         if len(clique) > len(max_clique):
             max_clique = clique
-    return max_clique
+    return len(max_clique)
 
+def nb_fibre (fichier_choisie):
+    lst = algo_welsh(fichier_choisie)
+    result_welsh = int(len(set(lst.values())))
+    result_clique = int(find_largest_clique(fichier_choisie))
+    if result_clique == result_welsh:
+        return f"Un total de {result_welsh} fibres sont nécessaire au minimum "
+    else:
+        return f"{result_welsh} fibres sont nécessaire (attention le resultat n'est pas optimum)"
 
+def visuel_multi():
+    pass
