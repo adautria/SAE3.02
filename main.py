@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 lst_couleurs_choisies = {}
 
 #recuperation des donnees sous forme d'une liste de liste
-def recup_donnees():
+def recup_donnees(fichier):
     lst_donnees = []  #On initialise la liste lst_donnees
-    with open('donnees.txt', 'r') as d:   #On ouvre le fichier 
+    with open(fichier, 'r') as d:   #On ouvre le fichier 
         for line in d:
             col1, col2, col3 = line.strip().split(' ')
             col1 = int(col1)
@@ -18,16 +18,8 @@ def recup_donnees():
     return(lst_donnees)
 
 
-def dessiner_couleur (G,C):
-    node_colors = [v['couleur'] for v in G.nodes.values()]
-    pos = nx.circular_layout(G)
-    nx.draw_networkx_nodes(G,pos,node_color=node_colors)
-    nx.draw_networkx_edges(G,pos)
-    nx.draw_networkx_labels(G,pos) 
-    plt.show()
-
-def cree_graph_incompatibilite():
-    lst_donnees = recup_donnees()
+def cree_graph_incompatibilite(fichier_choisie):
+    lst_donnees = recup_donnees(fichier_choisie)
     lst_signaux = []
     # Créez un graphique vide
     G = nx.Graph()
@@ -49,15 +41,35 @@ def cree_graph_incompatibilite():
 
 
 
-def algo_welsh ():
-    G = cree_graph_incompatibilite()
+def algo_welsh (fichier_choisie):
+    G = cree_graph_incompatibilite(fichier_choisie)
     lst_noeuds = G.nodes()
     dico_couleurs_choisies = {}
     for noeud in lst_noeuds:
-        nx.set_node_attributes(G, {noeud: 'blanc'}, 'couleur')
+        nx.set_node_attributes(G, {noeud: 'white'}, 'couleur')
     for noeud in lst_noeuds:
         lst_voisins = list(G.neighbors(noeud))
-        couleurs_possibles = {"white":1, "red":0, "orange":0, 'yellow':0, 'green':0, 'blue':0, 'purple':0, 'brown':0, 'grey':0, 'black':0, 'pink':0, 'turquoise':0, 'indigo':0, 'magenta':0, 'cyan':0}
+        couleurs_possibles = {
+            "white": 1,
+            "red": 0,
+            "orange": 0,
+            "yellow": 0,
+            "green": 0,
+            "blue": 0,
+            "purple": 0,
+            "pink": 0,
+            "brown": 0,
+            "gray": 0,
+            "beige": 0,
+            "olive": 0,
+            "navy": 0,
+            "teal": 0,
+            "lavender": 0,
+            "turquoise": 0,
+            "coral": 0,
+            "magenta": 0,
+            "crimson": 0,
+            "violet": 0}
         for voisin in lst_voisins :
             couleur_du_voisin = G.nodes[voisin]['couleur']
             couleurs_possibles[couleur_du_voisin] = 1
@@ -69,19 +81,18 @@ def algo_welsh ():
     return dico_couleurs_choisies
 
 # Dessinez le graphique
-def dessiner_graph():
-    G = cree_graph_incompatibilite()
+def dessiner_graph(fichier_choisie):
+    G = cree_graph_incompatibilite(fichier_choisie)
     pos = nx.circular_layout(G)
-    dico_couleurs_choisies = algo_welsh()
-    print (dico_couleurs_choisies)
+    dico_couleurs_choisies = algo_welsh(fichier_choisie)
     for signal,couleur in dico_couleurs_choisies.items():
         nx.draw_networkx_nodes(G,pos,node_color=couleur,node_size=700,nodelist=[signal])
     nx.draw_networkx_edges(G,pos)
     nx.draw_networkx_labels(G,pos) 
     plt.show()
 
-def nb_fibre ():
-    lst = algo_welsh()
+def nb_fibre (fichier_choisie):
+    lst = algo_welsh(fichier_choisie)
     return int(len(set(lst.values())))
 
 def find_largest_clique():
@@ -97,7 +108,4 @@ def find_largest_clique():
             max_clique = clique
     return max_clique
 
-print(nb_fibre())
-print(algo_welsh())
-dessiner_graph()
-print (find_largest_clique())
+
