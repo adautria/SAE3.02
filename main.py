@@ -116,3 +116,56 @@ def nb_fibre (fichier_choisie):
 
 def visuel_multi():
     pass
+
+
+def coordonnées_x(fichier_choisie,signal):
+    lst_donnees = recup_donnees(fichier_choisie)
+    x1 = lst_donnees[signal-1][1][0]
+    x2 = lst_donnees[signal-1][1][1]
+    return x1,x2
+
+def coordonnées_y(fichier_choisie,signal):
+    dico_couleurs_choisies = algo_welsh(fichier_choisie)
+    dico_placement = {
+            "white": 0,
+            "red": 1,
+            "orange": 2,
+            "yellow":3,
+            "green": 4,
+            "blue": 5,
+            "purple": 6,
+            "pink": 7,
+            "brown": 8,
+            "gray": 9,
+            "beige": 10,
+            "olive": 11,
+            "navy": 12,
+            "teal": 13,
+            "lavender": 14,
+            "turquoise": 15,
+            "coral": 16,
+            "magenta": 17,
+            "crimson": 18,
+            "violet": 19}
+    couleur_choisie = dico_couleurs_choisies[signal]
+    y1 = dico_placement[couleur_choisie]
+    y2 = dico_placement[couleur_choisie]
+    return y1,y2,couleur_choisie
+        
+
+
+def visuel_multi(fichier_choisie):
+    dico_couleurs_choisies = algo_welsh(fichier_choisie)
+    # initialisation de la figure
+    fig, ax = plt.subplots()
+    # boucle sur chaque segment à dessiner
+    for signal,couleur in dico_couleurs_choisies.items():
+        # récupération des coordonnées du segment
+        x1,x2 = coordonnées_x(fichier_choisie,signal)
+        y1,y2,couleur_choisie = coordonnées_y(fichier_choisie,signal)
+        # dessin du segment
+        ax.plot([x1, x2], [y1, y2], lw=10, color=couleur_choisie)
+    # affichage de la figure
+    plt.show()
+
+
