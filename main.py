@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 #variable globale
 lst_couleurs_choisies = {}
@@ -211,6 +212,11 @@ def visuel_multi(fichier_choisie):
         ax.plot([x1, x2], [y1, y2], lw=10, color=couleur_choisie)
         # Ajout du numéro du signal sur le segment
         ax.text(((x1+x2)/2)-20, ((y1+y2)/2)-0.07, signal, fontsize=12)
+    # On définit les labels des axes du graphique
+    ax.set_xlabel('fréquence (Hz)')
+    ax.set_ylabel('numéro de fibre')
+    # On définit le format de l'axe y pour qu'il n'utilise que des nombres entiers
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     # On affiche la figure
     plt.show()
 
