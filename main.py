@@ -201,8 +201,8 @@ def coordonnees_y(fichier_choisie,signal):
 def visuel_multi(fichier_choisie):
     # On récupère le dictionnaire des couleurs choisies pour chaque signal
     dico_couleurs_choisies = algo_welsh(fichier_choisie)
-    # On initialise la figure et l'axe
-    fig, ax = plt.subplots()
+    # On initialise la figure avec les dimensions 8,6 et l'axe
+    fig, ax = plt.subplots(figsize=(12, 7))
     # Pour chaque signal et sa couleur dans le dictionnaire
     for signal,couleur in dico_couleurs_choisies.items():
         # On récupère les coordonnées x1, x2, y1, y2 et la couleur choisie pour le signal
