@@ -5,6 +5,12 @@ from matplotlib.ticker import MaxNLocator
 #variable globale
 lst_couleurs_choisies = {}
 
+
+#------------------------------------------------------------------------------------------------------
+#----RECUPERATION-DONNEES-EN-LISTE---------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
 #recuperation des donnees sous forme d'une liste de liste
 def recup_donnees(fichier):
     lst_donnees = []  #On initialise la liste lst_donnees
@@ -19,16 +25,19 @@ def recup_donnees(fichier):
     return(lst_donnees)
 
 
+#------------------------------------------------------------------------------------------------------
+#----CREATION-GRAPH-INCOMPATIBILITE--------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
 def cree_graph_incompatibilite(fichier_choisie):
     # On récupère les données à partir du fichier sélectionné
     lst_donnees = recup_donnees(fichier_choisie)
-    # On initialise une liste de signaux et un graph
-    lst_signaux = []
+    # On initialise un graph vide
     G = nx.Graph()
     # Pour chaque signal dans les données, on ajoute un noeud au graph
     for signal in lst_donnees :
         G.add_node(signal[0])
-        lst_signaux.append(signal[0])
     # Tant qu'il reste des signaux dans la liste des données
     while lst_donnees :
         # On sélectionne le premier signal de la liste
@@ -47,7 +56,12 @@ def cree_graph_incompatibilite(fichier_choisie):
     return G
 
 
-#fonct
+#------------------------------------------------------------------------------------------------------
+#----ALGO-WELSH-POWELL-COLORATION----------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
+#fonction que utilise l'algorithme de welsh powell pour la coloration du graph
 def algo_welsh (fichier_choisie):
     # Créer un graphique à partir du fichier de données d'incompatibilité
     G = cree_graph_incompatibilite(fichier_choisie)
@@ -96,6 +110,11 @@ def algo_welsh (fichier_choisie):
     return dico_couleurs_choisies
 
 
+#------------------------------------------------------------------------------------------------------
+#----AFFICHAGE-DU-GRAPH--------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
 # Fonction que dessine le graphe d'incompatibilité
 def dessiner_graph(fichier_choisie):
     # On crée un graph à partir du fichier sélectionné
@@ -116,7 +135,12 @@ def dessiner_graph(fichier_choisie):
     plt.show()
 
 
-def trouve_clique_min(fichier_choisie):
+#------------------------------------------------------------------------------------------------------
+#----FONCTION-DE-LA-CLIQUE-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
+def trouve_clique_max(fichier_choisie):
     # On crée un graph à partir du fichier sélectionné
     graph = cree_graph_incompatibilite(fichier_choisie)
     # On initialise une liste vide pour la clique maximale
@@ -139,13 +163,18 @@ def trouve_clique_min(fichier_choisie):
     return len(max_clique)
 
 
+#------------------------------------------------------------------------------------------------------
+#----RESULTAT-NB-FIBRES-NECESSAIRE---------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
+
 def nb_fibre (fichier_choisie):
     # On récupère le dictionnaire des couleurs choisies pour chaque signal
     lst = algo_welsh(fichier_choisie)
     # On calcule le nombre de couleurs différentes utilisées par l'algorithme de Welsh et Powell
     result_welsh = int(len(set(lst.values())))
     # On calcule la taille de la clique maximale dans le graph
-    result_clique = int(trouve_clique_min(fichier_choisie))
+    result_clique = int(trouve_clique_max(fichier_choisie))
     # Si le nombre de fibres nécessaires selon l'algorithme de Welsh et Powell est égal à la taille de la clique maximale
     if result_clique == result_welsh:
         # On retourne le nombre de fibres nécessaires au minimum
@@ -154,6 +183,11 @@ def nb_fibre (fichier_choisie):
     # et le nombre de couleurs utilisées par l'algorithme de Welsh et Powell
     else:
         return f"En théorie, entre {result_clique} et {result_welsh} fibres seront nécessaires"
+
+
+#------------------------------------------------------------------------------------------------------
+#----ATTRIBUTION-COORDONNEES---------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
 
 
 def coordonnees_x(fichier_choisie,signal):
@@ -196,12 +230,17 @@ def coordonnees_y(fichier_choisie,signal):
     y2 = dico_placement[couleur_choisie]
     # On retourne les coordonnées y1 et y2 ainsi que la couleur choisie pour le signal sélectionné
     return y1,y2,couleur_choisie
-        
+
+
+#------------------------------------------------------------------------------------------------------
+#----VISUEL-DU-MULTIPLEXAGE----------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------
+
 
 def visuel_multi(fichier_choisie):
     # On récupère le dictionnaire des couleurs choisies pour chaque signal
     dico_couleurs_choisies = algo_welsh(fichier_choisie)
-    # On initialise la figure avec les dimensions 8,6 et l'axe
+    # On initialise la figure avec les dimensions 12,7 et l'axe
     fig, ax = plt.subplots(figsize=(12, 7))
     # Pour chaque signal et sa couleur dans le dictionnaire
     for signal,couleur in dico_couleurs_choisies.items():
@@ -213,11 +252,10 @@ def visuel_multi(fichier_choisie):
         # Ajout du numéro du signal sur le segment
         ax.text(((x1+x2)/2)-20, ((y1+y2)/2)-0.07, signal, fontsize=12)
     # On définit les labels des axes du graphique
-    ax.set_xlabel('fréquence (Hz)')
+    ax.set_xlabel('fréquence (kHz)')
     ax.set_ylabel('numéro de fibre')
     # On définit le format de l'axe y pour qu'il n'utilise que des nombres entiers
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     # On affiche la figure
     plt.show()
-
 
