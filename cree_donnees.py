@@ -8,7 +8,7 @@ from random import randint
 def cree_donnees_f(nb_signaux):
    try:
      # Envoie le fichier donnees.txt dans la corbeille
-      os.remove('donnees2.txt') #Supprimer le fichier donnees2.txt s'il existe
+      os.remove('donnees.txt') #Supprimer le fichier donnees2.txt s'il existe
    except FileNotFoundError:
       # Le fichier n'existe pas, rien à faire
       pass
